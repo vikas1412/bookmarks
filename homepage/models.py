@@ -1,3 +1,11 @@
 from django.db import models
 
-# Create your models here.
+
+class Bookmark(models.Model):
+    name = models.CharField(max_length=200, default=None, blank=True)
+    url = models.URLField(max_length=230, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+    timestamp = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.name} - {self.url}"
