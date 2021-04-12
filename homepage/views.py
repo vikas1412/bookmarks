@@ -46,3 +46,14 @@ def delete_bookmark(request, pk):
         bookmark_obj = Bookmark.objects.get(pk=pk)
         bookmark_obj.delete()
         return redirect('index-bookmark')
+
+
+def search(request):
+    if request.method == 'GET':
+        search_query = request.GET['search']
+        bookmark_search = Bookmark.objects.filter(name__icontains=search_query)
+        params = {
+            'searches': bookmark_search,
+            'search_query': search_query,
+        }
+        return render(request, 'homepage/search.html', params)

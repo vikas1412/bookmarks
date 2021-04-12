@@ -12,5 +12,7 @@ urlpatterns = [
 
     path('<int:pk>/deleted/', views.delete_bookmark, name="delete-bookmark"),
 
+    path('search/', views.search, name="search"),
+
 
 ]
