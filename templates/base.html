@@ -24,7 +24,7 @@
 
 <nav class="navbar navbar-expand-lg p-1 navbar-light bg-light" style="border:1px dotted lightgrey">
     <div class="container-fluid">
-        <a class="navbar-brand" href="{% url 'index' %}">DoBookmark</a>
+        <a class="navbar-brand" href="{% url 'index-bookmark' %}">DoBookmark</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -78,9 +78,43 @@
                 <h5 class="modal-title pl-2" id="staticBackdropLabel">Add a bookmark</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            ...
+            <div class="modal-body">
+                <form action="{% url 'new-bookmark' %}" method="post">
+                    {% csrf_token %}
+                    <div class="container">
+                        <div class="mb-1">
+                            <label for="exampleFormControlInput1" class="form-label">Name</label>
+                            <input type="text" class="form-control" name="name" id="exampleFormControlInput1"
+                                   placeholder="Enter name of the bookmark">
+                        </div>
+                        <div class="mb-1">
+                            <label for="exampleFormControlInput2" class="form-label">URL</label>
+                            <input type="text" class="form-control" name="url" id="exampleFormControlInput2"
+                                   placeholder="Enter URL for new bookmark">
+                        </div>
+                        <div class=" mb-3">
+                            <label for="exampleFormControlTextarea3" class="form-label">Description</label>
+                            <textarea class="form-control" placeholder="Enter the description of your bookmark"
+                                      name="description" id="exampleFormControlTextarea3"
+                                      rows="3"></textarea>
+                        </div>
 
+                        <div class=" mb-3">
+                            <label for="exampleFormControlTextarea4" class="form-label">Tags</label>
+                            <input class="form-control" placeholder="Enter the description of your bookmark"
+                                   name="tags" id="Enter tags seprated by a comma.">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn-sm btn btn-secondary" data-bs-dismiss="modal">Close
+                            </button>
+                            <button type="submit" name="new" value="new" class="btn-sm btn btn-primary">Save</button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
         </div>
+
     </div>
 </div>
 
@@ -101,7 +135,7 @@
     <!-- Copyright -->
     <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
         © 2020 Copyright:
-        <a class="text-dark" href="https://bookmarks14.heroku.com">bookmarks.com</a>
+        <a class="text-dark" href="https://bookmarks14.herokuapp.com">bookmarks.com</a>
     </div>
     <!-- Copyright -->
 </footer>
