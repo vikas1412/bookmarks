@@ -4,7 +4,7 @@ from django.views.generic import RedirectView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('homepage/', include('homepage.urls')),
+    path('bookmarks/', include('homepage.urls')),
 
-    path('', RedirectView.as_view(url="homepage/", permanent=True)),
+    path('', RedirectView.as_view(url="bookmarks/", permanent=True)),
 ]
