@@ -1,6 +1,8 @@
 from django.contrib import admin
 
-from homepage.models import Bookmark
+from homepage.models import Bookmark, Folder
+
+admin.site.register(Folder)
 
 
 @admin.register(Bookmark)
