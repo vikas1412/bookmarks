@@ -2,10 +2,7 @@ from django.urls import path
 from homepage import views
 
 urlpatterns = [
-    # path('', views.index, name="index"),
-
-
-    path('', views.index, name="index-bookmark"),
+    path('', views.index, name="index"),
     path('new/', views.new_update_bookmark, name="new-bookmark"),
 
     path('<int:pk>/update/', views.new_update_bookmark, name="update-bookmark"),
