@@ -2,13 +2,15 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views import generic
 
-from homepage.models import Bookmark
+from homepage.models import Bookmark, Folder
 
 
 def index(request):
-    bookmarks = Bookmark.objects.all()
+    bookmarks = Bookmark.objects.all().order_by('-timestamp')
+    folders = Folder.objects.all()
     params = {
         'bookmarks': bookmarks,
+        'folders': folders,
     }
     return render(request, 'homepage/index.html', params)
 
