@@ -6,26 +6,133 @@
     <h1>Welcome to DoBookmarks. Now create your bookmarks here.</h1>
     <div class="mt-4"></div>
 
-    <div class="alert border border-primary" role="alert">
+    <div class="alert border border" role="alert">
+        {% if folders %}
+            {% for folder in folders %}
+                <div class="col-md-12 d-flex border-bottom p-2 justify-content-between">
+
+                    <div class="col-md-11">
+                        <i class="fa fa-folder" style="color: dodgerblue; font-size: 21px; padding-right: 1%;"
+                           aria-hidden="true"></i> {{ folder.name }}
+
+                    </div>
+                    <div class="col-md-1">
+                        <button class="btn btn-sm" type="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" data-bs-target="#rename-{{ forloop.counter }}"
+                                   data-bs-toggle="modal">
+                                Edit
+                            </a></li>
+                            <li><a class="dropdown-item" data-bs-target="#f-delete-{{ forloop.counter }}"
+                                   data-bs-toggle="modal">
+                                Delete
+                            </a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Rename Folder-->
+                <div class="modal fade" id="rename-{{ forloop.counter }}" data-bs-backdrop="static"
+                     data-bs-keyboard="false"
+                     tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="staticBackdropLabel">Rename '{{ folder.name }}'</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="#" method="post">
+                                    {% csrf_token %}
+                                    <div class="mb-1">
+                                        <input type="text" class="form-control" value="{{ folder.name }}"
+                                               name="name"
+                                               id="exampleFormControlInput1"
+                                               placeholder="Enter new name">
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--  Delete folder & content -->
+                <div class="modal fade" id="f-delete-{{ forloop.counter }}" data-bs-backdrop="static"
+                     data-bs-keyboard="false"
+                     tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="staticBackdropLabel">Delete this folder?</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Are you sure you want to delete the folder & its content? Folder once deleted cannot
+                                    be brought back.</p>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn-sm btn btn-secondary"
+                                            data-bs-dismiss="modal">Close
+                                    </button>
+                                    <form action="#" method="post">
+                                        <button type="submit" name="delete" value="delete"
+                                                class="btn-sm btn btn-primary">Delete
+                                        </button>
+                                    </form>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Button trigger modal -->
+            {% endfor %}
+        {% endif %}
+
         {% if bookmarks %}
             {% for bookmark in bookmarks %}
                 <div class="col-md-12 d-flex border-bottom p-2 justify-content-between">
-                    <span> {{ bookmark.name }}<br><span style="color: darkgrey">{{ bookmark.description|truncatechars:'240' }}</span></span>
-                    <button class="btn btn-outline btn-sm" type="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                        <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" data-bs-target="#edit-{{ forloop.counter }}"
-                               data-bs-toggle="modal">
-                            Edit
-                        </a></li>
-                        <li><a class="dropdown-item" data-bs-target="#delete-{{ forloop.counter }}"
-                               data-bs-toggle="modal">
-                            Delete
-                        </a></li>
-                    </ul>
-                    <!-- Button trigger modal -->
+
+                    <div class="col-md-11">
+                        <i class="fa fa-file" style="color: #6f94c6; font-size: 21px; padding-right: 1%;"
+                           aria-hidden="true"></i> {{ bookmark.name }}</div>
+                    <div class="col-md-1">
+                        <button class="btn btn-sm" type="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" data-bs-target="#edit-{{ forloop.counter }}"
+                                   data-bs-toggle="modal">
+                                Edit
+                            </a></li>
+                            <li><a class="dropdown-item" data-bs-target="#delete-{{ forloop.counter }}"
+                                   data-bs-toggle="modal">
+                                Delete
+                            </a></li>
+
+                            <li class="dropdown-item dropdown-submenu">
+                                <a tabindex="-1" href="#">More options</a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" data-bs-target="#delete-{{ forloop.counter }}"
+                                           data-bs-toggle="modal">
+                                        Delete
+                                    </a></li>
+                                    <li><a class="dropdown-item" data-bs-target="#delete-{{ forloop.counter }}"
+                                           data-bs-toggle="modal">
+                                        Delete
+                                    </a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
 
 
                     <!-- Modal EDIT-->
@@ -35,7 +142,7 @@
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                                    <h5 class="modal-title" id="staticBackdropLabel">Update your bookmark here</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                 </div>
@@ -93,7 +200,7 @@
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                                    <h5 class="modal-title" id="staticBackdropLabel">Delete this bookmark?</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                 </div>
