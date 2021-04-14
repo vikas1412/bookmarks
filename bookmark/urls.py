@@ -11,6 +11,6 @@ urlpatterns = [
 
     path('', RedirectView.as_view(url="bookmarks/", permanent=True)),
 
-    # path(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
+    path(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
