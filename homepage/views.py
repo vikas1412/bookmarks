@@ -27,7 +27,7 @@ def new_update_bookmark(request, pk=None):
         if request.POST.get("new") == "new":
             bookmark_obj = Bookmark(name=name, url=url, tags=tags, description=description)
             bookmark_obj.save()
-            return redirect('index-bookmark')
+            return redirect('index')
 
         if request.POST.get("update") == "update":
             bookmark_obj = Bookmark.objects.get(pk=pk)
@@ -37,7 +37,7 @@ def new_update_bookmark(request, pk=None):
             bookmark_obj.tags = tags
             bookmark_obj.save()
 
-        return redirect('index-bookmark')
+        return redirect('index')
 
     else:
         return HttpResponse("<h1>Get request not available</h1>")
@@ -47,7 +47,7 @@ def delete_bookmark(request, pk):
     if request.method == "POST":
         bookmark_obj = Bookmark.objects.get(pk=pk)
         bookmark_obj.delete()
-        return redirect('index-bookmark')
+        return redirect('index')
 
 
 def search(request):
