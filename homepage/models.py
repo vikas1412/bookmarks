@@ -11,7 +11,7 @@ class Folder(models.Model):
 
 class Bookmark(models.Model):
     name = models.CharField(max_length=200, default=None, blank=True)
-    folder_name = models.ManyToManyField(Folder, default=None, blank=True)
+    folder_name = models.ForeignKey(Folder, on_delete=models.SET_NULL, null=True)
     url = models.URLField(max_length=230, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     timestamp = models.DateTimeField(auto_now_add=True, blank=True, null=True)
