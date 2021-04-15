@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block title %}Homepage - DoBookmarks{% endblock %}
+
+{% block body %}
+    <h1>Welcome to DoBookmarks. Now create, view, delete, put to folders; your bookmarks.</h1>
+    <div class="mt-4"></div>
+
+    <div class="alert border border" role="alert">
+
+        <div class="col-md-12 d-flex border-bottom p-2 justify-content-between">
+
+            <div class="col-md-9">
+                <a href="#"><i class="fa fa-file" style="color: #6f94c6; font-size: 21px; padding-right: 1%;"
+                               aria-hidden="true"></i> {{ bookmark.name }}</a></div>
+            <div class="col-md-3">
+                {{ bookmark.timestamp }}
+            </div>
+
+        </div>
+
+        <strong>URL:</strong><br>
+        <a href="{{ bookmark.url }}">{{ bookmark.url }}</a><br>
+<br>
+        <strong>Description:</strong>
+        <p>{{ bookmark.description }}</p>
+
+        <strong>Tags:</strong><br>
+        {% for tag in bookmark.tags.all %}
+            <span class="badge bg-primary">{{ tag }}</span>
+        {% endfor %}
+    </div>
+
+    <!-- Modal -->
+    <div class="modal edit_bookmark fade" id="edit_model" data-bs-backdrop="static" data-bs-keyboard="false"
+         tabindex="-1"
+         aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header p-2">
+                    <h5 class="modal-title pl-2" id="staticBackdropLabel">Add a bookmark</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{% url 'new-bookmark' %}" method="post">
+                    {% csrf_token %}
+                    <div class="container">
+                        <div class="mb-1">
+                            <label for="exampleFormControlInput1" class="form-label">Name</label>
+                            <input type="text" class="form-control" name="name" id="exampleFormControlInput1"
+                                   placeholder="Enter name of the bookmark">
+                        </div>
+                        <div class="mb-1">
+                            <label for="exampleFormControlInput2" class="form-label">URL</label>
+                            <input type="text" class="form-control" name="url" id="exampleFormControlInput2"
+                                   placeholder="Enter URL for new bookmark">
+                        </div>
+                        <div class=" mb-3">
+                            <label for="exampleFormControlTextarea3" class="form-label">Description</label>
+                            <textarea class="form-control" placeholder="Enter the description of your bookmark"
+                                      name="description" id="exampleFormControlTextarea3"
+                                      rows="3"></textarea>
+                        </div>
+
+                        <div class=" mb-3">
+                            <label for="exampleFormControlTextarea4" class="form-label">Tags</label>
+                            <input class="form-control" placeholder="Enter the description of your bookmark"
+                                   name="tags" id="Enter tags seprated by a comma.">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn-sm btn btn-secondary" data-bs-dismiss="modal">Close
+                            </button>
+                            <button type="submit" name="update" class="btn-sm btn btn-primary">Save</button>
+                        </div>
+                    </div>
+                </form>
+
+
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}
