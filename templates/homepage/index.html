@@ -91,7 +91,8 @@
                                     <button type="button" class="btn-sm btn btn-secondary"
                                             data-bs-dismiss="modal">Close
                                     </button>
-                                    <form action="#" method="post">
+                                    <form action="{% url 'folder-delete' folder.id %}" method="post">
+                                        {% csrf_token %}
                                         <button type="submit" name="delete" value="delete"
                                                 class="btn-sm btn btn-primary">Delete
                                         </button>
