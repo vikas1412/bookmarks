@@ -17,6 +17,8 @@ urlpatterns = [
 
     path('folder/rename/<int:id>/', views.folder_rename, name="folder-rename"),
 
+    path('folder/<int:id>/delete/', views.folder_delete, name="folder-delete"),
+
 
 
 ]
