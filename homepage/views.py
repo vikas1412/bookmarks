@@ -25,11 +25,14 @@ def new_update_bookmark(request, pk=None):
         url = request.POST['url']
         tags = request.POST['tags']
 
-
+        tag_list = tags.split(',')
         if request.POST.get("new") == "new":
-            bookmark_obj = Bookmark(name=name, url=url, tags=tags, description=description)
+            bookmark_obj = Bookmark(name=name, url=url, description=description)
             bookmark_obj.save()
-            messages.success(request, f"Your bookmark '{name}' has been successfully.")
+            for tag in tag_list:
+                bookmark_obj.tags.add(tag)
+            bookmark_obj.save()
+            messages.success(request, f"Your bookmark '{name}' has been successfully created.")
             return redirect('index')
 
         if request.POST.get("update") == "update":
@@ -51,7 +54,7 @@ def delete_bookmark(request, pk):
     if request.method == "POST":
         bookmark_obj = Bookmark.objects.get(pk=pk)
         bookmark_obj.delete()
-        messages.success(request, f"Your bookmark was successfully deleted.")
+        messages.warning(request, f"Your bookmark was successfully deleted.")
         return redirect('index')
 
 
@@ -101,7 +104,7 @@ def folder_delete(request, id):
 
     for bookmark in bookmark_objects_to_delete:
         bookmark.delete()
-    messages.success(request, f"Your bookmark folder '{deleted_folder_name}'.")
+    messages.warning(request, f"Your bookmark folder '{deleted_folder_name}' was successfully deleted.")
     return redirect('index')
 
 

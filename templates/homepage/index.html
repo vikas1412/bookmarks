@@ -114,14 +114,23 @@
                 <div class="col-md-12 d-flex border-bottom p-2 justify-content-between">
 
                     <div class="col-md-11">
-                        <i class="fa fa-file" style="color: #6f94c6; font-size: 21px; padding-right: 1%;"
-                           aria-hidden="true"></i> {{ bookmark.name }}</div>
+                        <a href="http://{{ bookmark.url }}/"><i class="fa fa-file"
+                                                                style="color: #6f94c6; font-size: 21px; padding-right: 1%;"
+                                                                aria-hidden="true"></i> {{ bookmark.name }}</a>
+                        {% for tag in bookmark.tags.all %}
+                            <span class="badge bg-primary">{{ tag }}</span>
+                        {% endfor %}
+                    </div>
                     <div class="col-md-1">
                         <button class="btn btn-sm" type="button" data-bs-toggle="dropdown"
                                 aria-expanded="false">
                             <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
                         </button>
                         <ul class="dropdown-menu">
+                            <li><a href="{% url 'view-bookmark' bookmark.id %}" class="dropdown-item">
+                                View details
+                            </a>
+                            </li>
                             <li><a class="dropdown-item" data-bs-target="#edit-{{ forloop.counter }}"
                                    data-bs-toggle="modal">
                                 Edit
@@ -131,15 +140,18 @@
                                 Delete
                             </a></li>
 
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
 
-                            <li><a style="color: darkgrey;" class="dropdown-item"
-                                   data-bs-target="#delete-{{ forloop.counter }}"
-                                   data-bs-toggle="modal">
-                                Send to <i class="fa fa-arrow-down" aria-hidden="true"></i>
-                            </a></li>
+
+                            {% if folders %}
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li><a style="color: darkgrey;" class="dropdown-item"
+                                       data-bs-target="#delete-{{ forloop.counter }}"
+                                       data-bs-toggle="modal">
+                                    Send to <i class="fa fa-arrow-down" aria-hidden="true"></i>
+                                </a></li>
+                            {% endif %}
                             {% for folder in folders %}
                                 <li><a class="dropdown-item"
                                        href="{% url 'copy-to-folder' bookmark.id folder.id %}">
@@ -189,7 +201,7 @@
 
                                         <div class=" mb-3">
                                             <label for="exampleFormControlTextarea4" class="form-label">Tags</label>
-                                            <input class="form-control" value="{{ bookmark.tags }}"
+                                            <input class="form-control" value="{% for tag in bookmark.tags.all %}{{ tag }},{% endfor %}"
                                                    placeholder="Enter the description of your bookmark"
                                                    name="tags" id="Enter tags seprated by a comma.">
                                         </div>
@@ -220,7 +232,7 @@
                                             aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <p>Are you sure you want to delete this bookmark? {{ bookmark.id }}</p>
+                                    <p>Are you sure you want to delete this bookmark?</p>
                                     <div class="modal-footer">
                                         <button type="button" class="btn-sm btn btn-secondary"
                                                 data-bs-dismiss="modal">Close

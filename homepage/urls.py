@@ -21,6 +21,8 @@ urlpatterns = [
 
     path('folder/new/', views.new_folder, name="new-folder"),
 
+    path('view/<int:id>/', views.view_bookmark, name="view-bookmark"),
+
 
 
 ]
