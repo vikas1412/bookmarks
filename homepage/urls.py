@@ -19,6 +19,8 @@ urlpatterns = [
 
     path('folder/<int:id>/delete/', views.folder_delete, name="folder-delete"),
 
+    path('folder/new/', views.new_folder, name="new-folder"),
+
 
 
 ]

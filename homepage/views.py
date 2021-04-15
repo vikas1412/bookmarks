@@ -93,9 +93,20 @@ def folder_rename(request, id):
 
 def folder_delete(request, id):
     folder_delete_object = Folder.objects.get(id=id)
+    deleted_folder_name = folder_delete_object.name
+    folder_delete_object.delete()
     bookmark_objects_to_delete = Bookmark.objects.filter(folder_name=folder_delete_object)
 
     for bookmark in bookmark_objects_to_delete:
         bookmark.delete()
-    messages.success(request, f"Your bookmark folder '{folder_delete_object.name}'.")
+    messages.success(request, f"Your bookmark folder '{deleted_folder_name}'.")
     return redirect('index')
+
+
+def new_folder(request):
+    if request.method == 'POST':
+        new_folder_name = request.POST['name']
+        folder_object = Folder(name=new_folder_name)
+        folder_object.save()
+        messages.success(request, f"Folder '{new_folder_name}' was successfully created.")
+        return redirect('index')
