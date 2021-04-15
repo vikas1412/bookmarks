@@ -1,12 +1,13 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views import generic
-
+from django.contrib import messages
 from homepage.models import Bookmark, Folder
 
 
 def index(request):
-    bookmarks = Bookmark.objects.all().order_by('-timestamp')
+    bookmarks = Bookmark.objects.filter(folder_name=None).order_by('-timestamp')
+
     folders = Folder.objects.all()
     params = {
         'bookmarks': bookmarks,
@@ -37,6 +38,7 @@ def new_update_bookmark(request, pk=None):
             bookmark_obj.tags = tags
             bookmark_obj.save()
 
+        messages.success(request, 'Your mesas')
         return redirect('index')
 
     else:
@@ -59,3 +61,28 @@ def search(request):
             'search_query': search_query,
         }
         return render(request, 'homepage/search.html', params)
+
+
+def copy_to_folder(request, b_id=None, f_id=None):
+    bookmark_id = Bookmark.objects.get(id=b_id)
+    bookmark_id.folder_name = Folder.objects.get(id=f_id)
+    bookmark_id.save()
+    return redirect('index')
+
+
+def display_folder_content(request, id):
+    folder_object = Folder.objects.get(id=id)
+    bookmark_object = Bookmark.objects.filter(folder_name=folder_object)
+    params = {
+        'bookmarks': bookmark_object,
+    }
+
+    return render(request, 'homepage/display_folder_content.html', params)
+
+
+def folder_rename(request, id):
+    if request.method == 'POST':
+        folder_obj = Folder.objects.get(id=id)
+        folder_obj.name = request.POST['name']
+        folder_obj.save()
+        return redirect('index')
