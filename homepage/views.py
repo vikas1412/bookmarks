@@ -22,12 +22,14 @@ def new_update_bookmark(request, pk=None):
 
         name = request.POST['name']
         description = request.POST['description']
-        url = request.POST['description']
+        url = request.POST['url']
         tags = request.POST['tags']
+
 
         if request.POST.get("new") == "new":
             bookmark_obj = Bookmark(name=name, url=url, tags=tags, description=description)
             bookmark_obj.save()
+            messages.success(request, f"Your bookmark '{name}' has been successfully.")
             return redirect('index')
 
         if request.POST.get("update") == "update":
@@ -94,8 +96,8 @@ def folder_rename(request, id):
 def folder_delete(request, id):
     folder_delete_object = Folder.objects.get(id=id)
     deleted_folder_name = folder_delete_object.name
-    folder_delete_object.delete()
     bookmark_objects_to_delete = Bookmark.objects.filter(folder_name=folder_delete_object)
+    folder_delete_object.delete()
 
     for bookmark in bookmark_objects_to_delete:
         bookmark.delete()
@@ -110,3 +112,12 @@ def new_folder(request):
         folder_object.save()
         messages.success(request, f"Folder '{new_folder_name}' was successfully created.")
         return redirect('index')
+
+
+def view_bookmark(request, id):
+    bookmark_obj = Bookmark.objects.get(id=id)
+    params = {
+        'bookmark': bookmark_obj,
+    }
+
+    return render(request, 'homepage/view_bookmark.html', params)
