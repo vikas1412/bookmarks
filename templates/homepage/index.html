@@ -10,10 +10,12 @@
         {% if folders %}
             {% for folder in folders %}
                 <div class="col-md-12 d-flex border-bottom p-2 justify-content-between">
-
                     <div class="col-md-11">
-                        <i class="fa fa-folder" style="color: dodgerblue; font-size: 21px; padding-right: 1%;"
-                           aria-hidden="true"></i> {{ folder.name }}
+                        <a href="{% url 'folder-content' folder.id %}">
+
+                            <i class="fa fa-folder" style="color: dodgerblue; font-size: 21px; padding-right: 1%;"
+                               aria-hidden="true"></i> {{ folder.name }}
+                        </a>
 
                     </div>
                     <div class="col-md-1">
@@ -46,13 +48,23 @@
                                         aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <form action="#" method="post">
+                                <form action="{% url 'folder-rename' folder.id %}" method="post">
                                     {% csrf_token %}
                                     <div class="mb-1">
                                         <input type="text" class="form-control" value="{{ folder.name }}"
                                                name="name"
                                                id="exampleFormControlInput1"
                                                placeholder="Enter new name">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn-sm btn btn-secondary"
+                                                data-bs-dismiss="modal">Close
+                                        </button>
+                                        <form action="#" method="post">
+                                            <button type="submit" name="delete" value="delete"
+                                                    class="btn-sm btn btn-primary">Rename
+                                            </button>
+                                        </form>
                                     </div>
                                 </form>
 
@@ -118,19 +130,21 @@
                                 Delete
                             </a></li>
 
-                            <li class="dropdown-item dropdown-submenu">
-                                <a tabindex="-1" href="#">More options</a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" data-bs-target="#delete-{{ forloop.counter }}"
-                                           data-bs-toggle="modal">
-                                        Delete
-                                    </a></li>
-                                    <li><a class="dropdown-item" data-bs-target="#delete-{{ forloop.counter }}"
-                                           data-bs-toggle="modal">
-                                        Delete
-                                    </a></li>
-                                </ul>
+                            <li>
+                                <hr class="dropdown-divider">
                             </li>
+
+                            <li><a style="color: darkgrey;" class="dropdown-item"
+                                   data-bs-target="#delete-{{ forloop.counter }}"
+                                   data-bs-toggle="modal">
+                                Send to <i class="fa fa-arrow-down" aria-hidden="true"></i>
+                            </a></li>
+                            {% for folder in folders %}
+                                <li><a class="dropdown-item"
+                                       href="{% url 'copy-to-folder' bookmark.id folder.id %}">
+                                    {{ folder.name|truncatechars:'50' }}
+                                </a></li>
+                            {% endfor %}
                         </ul>
                     </div>
 
@@ -222,6 +236,7 @@
                             </div>
                         </div>
                     </div>
+
 
                 </div>
             {% endfor %}
