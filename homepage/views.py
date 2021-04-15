@@ -38,7 +38,7 @@ def new_update_bookmark(request, pk=None):
             bookmark_obj.tags = tags
             bookmark_obj.save()
 
-        messages.success(request, 'Your mesas')
+        messages.success(request, f"Your bookmark '{bookmark_obj.name}' has been successfully updated.")
         return redirect('index')
 
     else:
@@ -49,6 +49,7 @@ def delete_bookmark(request, pk):
     if request.method == "POST":
         bookmark_obj = Bookmark.objects.get(pk=pk)
         bookmark_obj.delete()
+        messages.success(request, f"Your bookmark was successfully deleted.")
         return redirect('index')
 
 
@@ -67,6 +68,7 @@ def copy_to_folder(request, b_id=None, f_id=None):
     bookmark_id = Bookmark.objects.get(id=b_id)
     bookmark_id.folder_name = Folder.objects.get(id=f_id)
     bookmark_id.save()
+    messages.success(request, f"Your bookmark was successfully sent to '{bookmark_id.folder_name}'.")
     return redirect('index')
 
 
@@ -85,4 +87,15 @@ def folder_rename(request, id):
         folder_obj = Folder.objects.get(id=id)
         folder_obj.name = request.POST['name']
         folder_obj.save()
+        messages.success(request, f"Your bookmark folder was successfully renamed.")
         return redirect('index')
+
+
+def folder_delete(request, id):
+    folder_delete_object = Folder.objects.get(id=id)
+    bookmark_objects_to_delete = Bookmark.objects.filter(folder_name=folder_delete_object)
+
+    for bookmark in bookmark_objects_to_delete:
+        bookmark.delete()
+    messages.success(request, f"Your bookmark folder '{folder_delete_object.name}'.")
+    return redirect('index')
