@@ -93,7 +93,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="{% url 'new-bookmark' %}" method="post">
+                <form action="{% url 'new-folder' %}" method="post">
                     {% csrf_token %}
                     <div class="container">
                         <div class="mb-1">
@@ -103,6 +103,12 @@
                             <input type="text" class="form-control" name="name" id="exampleFormControlInput1"
                                    placeholder="Enter folder name">
                         </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn-sm btn btn-secondary" data-bs-dismiss="modal">Close
+                        </button>
+                        <button type="submit" name="new" value="new" class="btn-sm btn btn-primary">Create</button>
                     </div>
                 </form>
 
