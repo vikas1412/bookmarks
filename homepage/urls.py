@@ -9,7 +9,14 @@ urlpatterns = [
 
     path('<int:pk>/deleted/', views.delete_bookmark, name="delete-bookmark"),
 
+    path('<int:b_id>/copy-to/<int:f_id>/', views.copy_to_folder, name="copy-to-folder"),
+
     path('search/', views.search, name="search"),
+
+    path('folder/<int:id>/', views.display_folder_content, name="folder-content"),
+
+    path('folder/rename/<int:id>/', views.folder_rename, name="folder-rename"),
+
 
 
 ]
