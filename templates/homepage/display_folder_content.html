@@ -6,6 +6,13 @@
     <h1>{{ bookmark.folder_name }}</h1>
     <div class="mt-4"></div>
 
+    <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);"
+         aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ folder_name }}</li>
+        </ol>
+    </nav>
     <div class="alert border border" role="alert">
 
         {% if bookmarks %}
@@ -65,7 +72,7 @@
                     <div class="modal fade" id="edit-{{ forloop.counter }}" data-bs-backdrop="static"
                          data-bs-keyboard="false"
                          tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                        <div class="modal-dialog">
+                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="staticBackdropLabel">Update your bookmark here</h5>
@@ -100,10 +107,12 @@
 
                                         <div class=" mb-3">
                                             <label for="exampleFormControlTextarea4" class="form-label">Tags</label>
-                                            <input class="form-control" value="{% for tag in bookmark.tags.all %}{{ tag }},{% endfor %}"
+                                            <input class="form-control"
+                                                   value="{% for tag in bookmark.tags.all %}{{ tag }},{% endfor %}"
                                                    placeholder="Enter the description of your bookmark"
                                                    name="tags" id="Enter tags seprated by a comma.">
                                         </div>
+
                                         <div class="modal-footer">
                                             <button type="button" class="btn-sm btn btn-secondary"
                                                     data-bs-dismiss="modal">Close
@@ -123,7 +132,7 @@
                     <div class="modal fade" id="delete-{{ forloop.counter }}" data-bs-backdrop="static"
                          data-bs-keyboard="false"
                          tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                        <div class="modal-dialog">
+                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="staticBackdropLabel">Delete this bookmark?</h5>
@@ -158,56 +167,6 @@
                    href="#">click here
                 </a>.</p>
         {% endif %}
-
-    </div>
-
-    <!-- Modal -->
-    <div class="modal edit_bookmark fade" id="edit_model" data-bs-backdrop="static" data-bs-keyboard="false"
-         tabindex="-1"
-         aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header p-2">
-                    <h5 class="modal-title pl-2" id="staticBackdropLabel">Add a bookmark</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form action="{% url 'new-bookmark' %}" method="post">
-                    {% csrf_token %}
-                    <div class="container">
-                        <div class="mb-1">
-                            <label for="exampleFormControlInput1" class="form-label">Name</label>
-                            <input type="text" class="form-control" name="name" id="exampleFormControlInput1"
-                                   placeholder="Enter name of the bookmark">
-                        </div>
-                        <div class="mb-1">
-                            <label for="exampleFormControlInput2" class="form-label">URL</label>
-                            <input type="text" class="form-control" name="url" id="exampleFormControlInput2"
-                                   placeholder="Enter URL for new bookmark">
-                        </div>
-                        <div class=" mb-3">
-                            <label for="exampleFormControlTextarea3" class="form-label">Description</label>
-                            <textarea class="form-control" placeholder="Enter the description of your bookmark"
-                                      name="description" id="exampleFormControlTextarea3"
-                                      rows="3"></textarea>
-                        </div>
-
-                        <div class=" mb-3">
-                            <label for="exampleFormControlTextarea4" class="form-label">Tags</label>
-                            <input class="form-control" placeholder="Enter the description of your bookmark"
-                                   name="tags" id="Enter tags seprated by a comma.">
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn-sm btn btn-secondary" data-bs-dismiss="modal">Close
-                            </button>
-                            <button type="submit" name="update" class="btn-sm btn btn-primary">Save</button>
-                        </div>
-                    </div>
-                </form>
-
-
-            </div>
-
-        </div>
     </div>
 
 {% endblock %}
