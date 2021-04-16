@@ -91,6 +91,8 @@ def display_folder_content(request, id):
     bookmark_object = Bookmark.objects.filter(folder_name=folder_object)
     params = {
         'bookmarks': bookmark_object,
+        'folders': Folder.objects.all(),
+        'folder_name': folder_object.name,
     }
 
     return render(request, 'homepage/display_folder_content.html', params)
