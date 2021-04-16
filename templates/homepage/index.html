@@ -199,9 +199,20 @@
                                                       rows="3">{{ bookmark.description }}</textarea>
                                         </div>
 
+                                        <label class="form-label" for="id_folder_name">Send bookmark to
+                                            (Optional)</label>
+                                        <select class="mb-3 form-control" id="id_folder_name" name="sent_to_folder">
+                                            <option selected disabled>Select folder</option>
+                                            {% for folder in folders %}
+                                                <option value="{{ folder }}">{{ folder }}</option>
+                                            {% endfor %}
+
+                                        </select>
+
                                         <div class=" mb-3">
                                             <label for="exampleFormControlTextarea4" class="form-label">Tags</label>
-                                            <input class="form-control" value="{% for tag in bookmark.tags.all %}{{ tag }},{% endfor %}"
+                                            <input class="form-control"
+                                                   value="{% for tag in bookmark.tags.all %}{{ tag }},{% endfor %}"
                                                    placeholder="Enter the description of your bookmark"
                                                    name="tags" id="Enter tags seprated by a comma.">
                                         </div>

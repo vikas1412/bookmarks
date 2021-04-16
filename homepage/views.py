@@ -24,10 +24,15 @@ def new_update_bookmark(request, pk=None):
         description = request.POST['description']
         url = request.POST['url']
         tags = request.POST['tags']
+        sent_to_folder = request.POST.get('sent_to_folder')
+
+        folder_obj = None
+        if not sent_to_folder is None:
+            folder_obj = Folder.objects.get(name=sent_to_folder)
 
         tag_list = tags.split(',')
         if request.POST.get("new") == "new":
-            bookmark_obj = Bookmark(name=name, url=url, description=description)
+            bookmark_obj = Bookmark(name=name, url=url, folder_name=folder_obj, description=description)
             bookmark_obj.save()
             for tag in tag_list:
                 bookmark_obj.tags.add(tag)
@@ -40,7 +45,11 @@ def new_update_bookmark(request, pk=None):
             bookmark_obj.name = name
             bookmark_obj.description = description
             bookmark_obj.url = url
-            bookmark_obj.tags = tags
+            bookmark_obj.folder_name = folder_obj
+
+            for tag in tag_list:
+                bookmark_obj.tags.add(tag)
+
             bookmark_obj.save()
 
         messages.success(request, f"Your bookmark '{bookmark_obj.name}' has been successfully updated.")
